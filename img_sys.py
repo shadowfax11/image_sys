@@ -8,6 +8,8 @@ from components import CameraSensor, Lens, Mask
 import matplotlib.pyplot as plt
 import pdb
 
+EPS = 1e-9
+
 class system_4f:
     """
     Generic class for a 4f imaging system
@@ -51,8 +53,8 @@ class system_4f:
         dIx = Ix/self.mask.mask.shape[1]
         Iy = wavelength*self.f2/dfy
         dIy = Iy/self.mask.mask.shape[0]
-        x_img = np.linspace( -Ix/2 + dIx/2 , +Ix/2 - dIx/2 , self.mask.mask.shape[1])
-        y_img = np.linspace( -Iy/2 + dIy/2 , +Iy/2 - dIy/2 , self.mask.mask.shape[0])
+        x_img = np.linspace( -Ix/2 + dIx/2 , +Ix/2 - dIx/2 + EPS , self.mask.mask.shape[1])
+        y_img = np.linspace( -Iy/2 + dIy/2 , +Iy/2 - dIy/2 + EPS , self.mask.mask.shape[0])
         Fi = interp2d(x_img, y_img, psf, kind='linear')
         psf = Fi(self.sensor.x_sensor, self.sensor.y_sensor)
         psf = src_strength*psf/np.sum(np.abs(psf))

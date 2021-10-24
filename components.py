@@ -1,12 +1,15 @@
 import numpy as np
 from numpy.core.function_base import linspace
 
+EPS = 1e-9
+
 class CameraSensor:
     """
     Defines the camera sensor properties
     """
     def __init__(self, image_size, pitch, RGB=False, name=None, bayer_pattern=None):
         self.img_size = np.array([image_size[0], image_size[1]])    # image height, width (in pixels)
+        self.img_cntr = np.array([int(image_size[0]/2), int(image_size[1]/2)])
         if RGB:
             self.type = 'RGB'
             self.C = 3  # number of channels
@@ -26,8 +29,8 @@ class CameraSensor:
         # create coordinate system for image plane
         dh, dw = self.px_size[0], self.px_size[1]
         h , w = dh*self.img_size[0], dw*self.img_size[1]
-        self.x_sensor = np.linspace( -w/2 + dw/2 , +w/2 - dw/2 , self.img_size[1])
-        self.y_sensor = np.linspace( -h/2 + dh/2 , +h/2 - dh/2 , self.img_size[1])
+        self.x_sensor = np.linspace( -w/2 + dw/2 , +w/2 - dw/2 + EPS, self.img_size[1])
+        self.y_sensor = np.linspace( -h/2 + dh/2 , +h/2 - dh/2 + EPS, self.img_size[1])
         self.X_sensor, self.Y_sensor = np.meshgrid(self.x_sensor, self.y_sensor)
     
     def get_physical_sensor_size(self):
@@ -59,6 +62,6 @@ class Mask:
         # create coordinate system on mask-plane
         h, w = self.mask_size[0], self.mask_size[1]
         dh, dw = self.mask_pitch[0], self.mask_pitch[1]
-        self.x_mask = np.linspace( -w/2 + dw/2 , +w/2 - dw/2 , num=self.mask.shape[1])
-        self.y_mask = np.linspace( -h/2 + dh/2 , +h/2 - dh/2 , num=self.mask.shape[0])
+        self.x_mask = np.linspace( -w/2 + dw/2 , +w/2 - dw/2 + EPS, num=self.mask.shape[1])
+        self.y_mask = np.linspace( -h/2 + dh/2 , +h/2 - dh/2 + EPS, num=self.mask.shape[0])
         self.X_mask, self.Y_mask = np.meshgrid(self.x_mask, self.y_mask)
