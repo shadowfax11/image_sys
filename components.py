@@ -30,7 +30,7 @@ class CameraSensor:
         dh, dw = self.px_size[0], self.px_size[1]
         h , w = dh*self.img_size[0], dw*self.img_size[1]
         self.x_sensor = np.linspace( -w/2 + dw/2 , +w/2 - dw/2 + EPS, self.img_size[1])
-        self.y_sensor = np.linspace( -h/2 + dh/2 , +h/2 - dh/2 + EPS, self.img_size[1])
+        self.y_sensor = np.linspace( -h/2 + dh/2 , +h/2 - dh/2 + EPS, self.img_size[0])
         self.X_sensor, self.Y_sensor = np.meshgrid(self.x_sensor, self.y_sensor)
     
     def get_physical_sensor_size(self):
